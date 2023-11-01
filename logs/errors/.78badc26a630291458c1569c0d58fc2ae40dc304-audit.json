@@ -1,0 +1,40 @@
+{
+  "keep": {
+    "days": true,
+    "amount": 14
+  },
+  "auditLog": "E:\\projects\\lvl2Assignment\\assignment-5\\backend\\logs\\errors\\.78badc26a630291458c1569c0d58fc2ae40dc304-audit.json",
+  "files": [
+    {
+      "date": 1690169425383,
+      "name": "E:\\projects\\lvl2Assignment\\assignment-5\\backend\\logs\\errors\\errors-2023-07-24-09.log",
+      "hash": "472c5c3764220407b3bbe723110174cafa7be8b958567e358f1a8516f8645e32"
+    },
+    {
+      "date": 1690171201557,
+      "name": "E:\\projects\\lvl2Assignment\\assignment-5\\backend\\logs\\errors\\errors-2023-07-24-10.log",
+      "hash": "a7dfac3aa6d23767069374b28fa9167669aa1f800b922bd735e216ad79000e4e"
+    },
+    {
+      "date": 1690174844614,
+      "name": "E:\\projects\\lvl2Assignment\\assignment-5\\backend\\logs\\errors\\errors-2023-07-24-11.log",
+      "hash": "184dc2035ed40be5d26f15dd943a00419224face1133c84efa33ebf1604f937c"
+    },
+    {
+      "date": 1690179435331,
+      "name": "E:\\projects\\lvl2Assignment\\assignment-5\\backend\\logs\\errors\\errors-2023-07-24-12.log",
+      "hash": "f4f19161fb80e4af45aa719e3ef4d90c1df7b1749d81a4aefdac8e4774589bd0"
+    },
+    {
+      "date": 1690189201742,
+      "name": "E:\\projects\\lvl2Assignment\\assignment-5\\backend\\logs\\errors\\errors-2023-07-24-15.log",
+      "hash": "6e075a99d83141de574e12f6b6fdb012969c8b411d58f4097809117d0b72f407"
+    },
+    {
+      "date": 1690193675259,
+      "name": "E:\\projects\\lvl2Assignment\\assignment-5\\backend\\logs\\errors\\errors-2023-07-24-16.log",
+      "hash": "f00e201f104dcb5c30ecd865fcc6c19e0f0f4f92fab0f94f5d653e77e469d369"
+    }
+  ],
+  "hashType": "sha256"
+}
