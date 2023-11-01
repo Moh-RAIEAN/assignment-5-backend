@@ -4,17 +4,6 @@ import { IUser } from "./user.interface";
 import { User } from "./user.model";
 import { Types } from "mongoose";
 
-const createUser = async (
-  userData: IUser,
-): Promise<IGenericResult<IUser | null>> => {
-  const result = await User.create(userData);
-  return {
-    statusCode: StatusCodes.CREATED,
-    message: "user created successfully",
-    data: result,
-  };
-};
-
 const readUser = async (
   userId: Types.ObjectId,
 ): Promise<IGenericResult<IUser | null>> => {
@@ -25,4 +14,4 @@ const readUser = async (
     data: result,
   };
 };
-export const UserServices = { createUser, readUser };
+export const UserServices = { readUser };
