@@ -19,5 +19,21 @@ const registerUser = catchAsync(async (req, res) => {
     data: { ...userInfo, accessToken },
   });
 });
+const loginUser = catchAsync(async (req, res) => {
+  const authData = req.body;
+  const { data, ...othersResult } = await AuthServices.loginUser(authData);
+  const { accessToken, refreshToken, ...userInfo } = data;
+  const cookiesOptions = {
+    isSeceure: Configs.env === "production",
+    httpOnly: true,
+  };
 
-export const AuthControllers = { registerUser };
+  res.cookie("refreshToken", refreshToken, cookiesOptions);
+  sendResponse(res, {
+    statusCode: othersResult?.statusCode,
+    message: othersResult?.message,
+    data: { ...userInfo, accessToken },
+  });
+});
+
+export const AuthControllers = { registerUser, loginUser };

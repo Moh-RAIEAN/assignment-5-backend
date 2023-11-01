@@ -45,4 +45,12 @@ userSchema.pre("save", async function (next) {
   }
 });
 
+userSchema.statics.comparePassword = async function (
+  givenPassword: string,
+  savedPassword: string,
+) {
+  const isPasswordMatched = await bcrypt.compare(givenPassword, savedPassword);
+  return isPasswordMatched;
+};
+
 export const User = model<IUser, IUserModel>("User", userSchema);

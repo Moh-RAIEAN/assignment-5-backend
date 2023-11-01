@@ -38,4 +38,44 @@ const registerUser = async (
   };
 };
 
-export const AuthServices = { registerUser };
+const loginUser = async (
+  authData: IAuthCredentials,
+): Promise<IGenericResult<IAuthCredentials>> => {
+  const isExsists = await User.findOne({ email: authData?.email }).select(
+    "+password",
+  );
+  if (!isExsists) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "user does not exists!", [
+      { path: "email", message: "user does not exists" },
+    ]);
+  }
+
+  const isPasswordMatched = await User.comparePassword(
+    authData?.password,
+    isExsists?.password,
+  );
+  if (!isPasswordMatched) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "wrong password", [
+      { path: "password", message: "wrong password" },
+    ]);
+  }
+
+  const accessToken = JwtHelpers.createToken(
+    { id: isExsists?.id, email: isExsists?.email },
+    Configs.jwtAccessTokenSecret!,
+    { expiresIn: Configs.jwtAccessTokenExpirationDate },
+  );
+
+  const refreshToken = JwtHelpers.createToken(
+    { id: isExsists?.id, email: isExsists?.email },
+    Configs.jwtRefreshTokenSecret!,
+    { expiresIn: Configs.jwtRefreshTokenExpirationDate },
+  );
+
+  return {
+    statusCode: StatusCodes.CREATED,
+    message: "user logged in successfully",
+    data: { ...isExsists.toJSON(), accessToken, refreshToken },
+  };
+};
+export const AuthServices = { registerUser, loginUser };

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Model, Types } from "mongoose";
 
 export type IUser = {
@@ -7,4 +8,10 @@ export type IUser = {
   profileImage: string;
 };
 
-export type IUserModel = Model<IUser, Record<string, string>>;
+type IUserStatics = {
+  comparePassword: (
+    givenPassword: string,
+    savedPassword: string,
+  ) => Promise<boolean>;
+};
+export type IUserModel = Model<IUser, Record<string, string>> & IUserStatics;
