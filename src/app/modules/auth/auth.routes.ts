@@ -5,7 +5,11 @@ import validateRequest from "../../middlewares/validateRequestHandler";
 
 const router: Router = Router();
 
-router.post("/register", AuthControllers.registerUser);
+router.post(
+  "/register",
+  validateRequest(AuthValidations.registerValidationZodSchema),
+  AuthControllers.registerUser,
+);
 router.post(
   "/login",
   validateRequest(AuthValidations.loginValidationZodSchema),
