@@ -13,6 +13,10 @@ router.post(
 
 router.get("/", BookControllers.getBooks);
 
-router.get("/:bookId", BookControllers.getBook);
+router.get(
+  "/:bookId",
+  validateRequest(BookValidations.getBookZodValitaionSchema),
+  BookControllers.getBook,
+);
 
 export const BookRoutes = router;

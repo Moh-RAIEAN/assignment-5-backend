@@ -32,4 +32,19 @@ const createBookZodValitaionSchema = z.object({
     }),
 });
 
-export const BookValidations = { createBookZodValitaionSchema };
+const getBookZodValitaionSchema = z.object({
+  params: z.object({
+    bookId: z.custom<string>((value) => {
+      if (!mongoose.Types.ObjectId.isValid(value as string)) {
+        throw new z.ZodError([
+          { path: ["userId"], code: "custom", message: "invalid book id" },
+        ]);
+      }
+      return value;
+    }),
+  }),
+});
+export const BookValidations = {
+  createBookZodValitaionSchema,
+  getBookZodValitaionSchema,
+};
