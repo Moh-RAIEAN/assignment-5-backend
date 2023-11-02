@@ -3,9 +3,9 @@ import sendResponse from "../../../helpers/sendResponseHelpers/sendResponse";
 import catchAsync from "../../shared/catchAsync";
 import { UserServices } from "./user.service";
 
-const readUser = catchAsync(async (req, res) => {
+const getUser = catchAsync(async (req, res) => {
   const userId = req.params?.userId;
-  const result = await UserServices.readUser(
+  const result = await UserServices.getUser(
     userId as unknown as Types.ObjectId,
   );
   sendResponse(res, {
@@ -15,4 +15,4 @@ const readUser = catchAsync(async (req, res) => {
   });
 });
 
-export const UserControllers = { readUser };
+export const UserControllers = { getUser };
