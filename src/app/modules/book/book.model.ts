@@ -14,6 +14,7 @@ const bookSchema = new Schema<IBook>(
     },
     genre: { type: String, required: true },
     publicationYear: { type: String, required: true },
+    image: { type: String, required: true },
     user: { type: Types.ObjectId, ref: "User", required: true },
   },
   {

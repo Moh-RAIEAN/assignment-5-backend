@@ -8,6 +8,7 @@ const createBookZodValitaionSchema = z.object({
       author: z.string().trim().toLowerCase(),
       genre: z.string().trim().toLowerCase(),
       publicationYear: z.string().trim().toLowerCase(),
+      image: z.string(),
       user: z.custom<string>((value) => {
         if (!value) {
           throw new z.ZodError([
