@@ -9,6 +9,7 @@ import {
 import { BookConstants } from "./book.constants";
 import calculatePagination from "../../../helpers/paginationHelpers/paginationHelpers";
 import { filterHelpers } from "../../../helpers/filterHelpers/filterHelpers";
+import ApiError from "../../errors/apiErrorHandler";
 
 const createBook = async (bookData: IBook): Promise<IGenericResult<IBook>> => {
   const result = await Book.create(bookData);
@@ -66,4 +67,18 @@ const getBooks = async (
     data: result,
   };
 };
-export const BookServices = { createBook, getBooks };
+
+const getBook = async (bookId: string): Promise<IGenericResult<IBook>> => {
+  const result = await Book.findById(bookId);
+  if (!result) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "requested book not found!", [
+      { path: "bookId", message: "requested book not found!" },
+    ]);
+  }
+  return {
+    statusCode: StatusCodes.OK,
+    message: "book retrived successfully!",
+    data: result,
+  };
+};
+export const BookServices = { createBook, getBooks, getBook };

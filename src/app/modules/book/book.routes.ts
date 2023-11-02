@@ -10,10 +10,9 @@ router.post(
   validateRequest(BookValidations.createBookZodValitaionSchema),
   BookControllers.createBook,
 );
-router.get(
-  "/",
-  //   validateRequest(BookValidations.createBookZodValitaionSchema),
-  BookControllers.getBooks,
-);
+
+router.get("/", BookControllers.getBooks);
+
+router.get("/:bookId", BookControllers.getBook);
 
 export const BookRoutes = router;
