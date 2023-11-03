@@ -20,6 +20,11 @@ router.get(
   BookControllers.getBook,
 );
 
-router.patch("/:bookId", validateAuth(), BookControllers.updateBook);
+router.patch(
+  "/:bookId",
+  validateAuth(),
+  validateRequest(BookValidations.updateBookZodValitaionSchema),
+  BookControllers.updateBook,
+);
 
 export const BookRoutes = router;
