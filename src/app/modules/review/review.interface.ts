@@ -3,7 +3,7 @@ import { IUser } from "../user/user.interface";
 
 export type IReview = {
   title: string;
-  book: ObjectId;
+  bookId: ObjectId;
   user: ObjectId | IUser;
 };
 
