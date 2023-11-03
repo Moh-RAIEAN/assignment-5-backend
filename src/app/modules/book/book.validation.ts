@@ -44,20 +44,13 @@ const getBookZodValitaionSchema = z.object({
     }),
   }),
 });
+
 const updateBookZodValitaionSchema = z.object({
   params: z.object({
     bookId: z.custom<string>((value) => {
-      if (!value) {
+      if (!mongoose.Types.ObjectId.isValid(value as string)) {
         throw new z.ZodError([
-          {
-            path: ["userId"],
-            code: "custom",
-            message: "bookId is required!",
-          },
-        ]);
-      } else if (!mongoose.Types.ObjectId.isValid(value as string)) {
-        throw new z.ZodError([
-          { path: ["userId"], code: "custom", message: "invalid book id" },
+          { path: ["bookId"], code: "custom", message: "invalid book id" },
         ]);
       }
       return value;
@@ -77,8 +70,22 @@ const updateBookZodValitaionSchema = z.object({
     }),
 });
 
+const deleteBookZodValitaionSchema = z.object({
+  params: z.object({
+    bookId: z.custom<string>((value) => {
+      if (!mongoose.Types.ObjectId.isValid(value as string)) {
+        throw new z.ZodError([
+          { path: ["bookId"], code: "custom", message: "invalid book id" },
+        ]);
+      }
+      return value;
+    }),
+  }),
+});
+
 export const BookValidations = {
   createBookZodValitaionSchema,
   getBookZodValitaionSchema,
   updateBookZodValitaionSchema,
+  deleteBookZodValitaionSchema,
 };

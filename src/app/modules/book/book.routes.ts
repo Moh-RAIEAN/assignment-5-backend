@@ -27,4 +27,11 @@ router.patch(
   BookControllers.updateBook,
 );
 
+router.delete(
+  "/:bookId",
+  validateAuth(),
+  validateRequest(BookValidations.deleteBookZodValitaionSchema),
+  BookControllers.deleteBook,
+);
+
 export const BookRoutes = router;
