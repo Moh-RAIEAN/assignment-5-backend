@@ -81,4 +81,35 @@ const getBook = async (bookId: string): Promise<IGenericResult<IBook>> => {
     data: result,
   };
 };
-export const BookServices = { createBook, getBooks, getBook };
+
+const updateBook = async (
+  bookId: string,
+  userId: string,
+  updatedData: IBook,
+): Promise<IGenericResult<IBook | null>> => {
+  const isBookExists = await Book.findOne({ _id: bookId });
+
+  if (!isBookExists) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "requested book not found!", [
+      { path: "bookId", message: "requested book not found!" },
+    ]);
+  }
+  if (!(isBookExists.user.toString() === userId)) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "permission denied!", [
+      { path: "userId", message: "permission denied!" },
+    ]);
+  }
+
+  const result = await Book.findOneAndUpdate(
+    { _id: bookId },
+    { ...updatedData },
+    { new: true },
+  );
+  return {
+    statusCode: StatusCodes.OK,
+    message: "book updated successfully!",
+    data: result,
+  };
+};
+
+export const BookServices = { createBook, getBooks, getBook, updateBook };

@@ -5,7 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { JwtHelpers } from "../../helpers/jwtHelpers/jwt.helpers";
 import Configs from "../configs";
 import { JwtPayload, Secret } from "jsonwebtoken";
-import User from "../modules/user/user.model";
+import { User } from "../modules/user/user.model";
 
 const validateAuth = (): RequestHandler => {
   return catchAsync(async (req, res, next) => {

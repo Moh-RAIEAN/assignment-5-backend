@@ -45,4 +45,16 @@ const getBook = catchAsync(async (req, res) => {
   });
 });
 
-export const BookControllers = { createBook, getBooks, getBook };
+const updateBook = catchAsync(async (req, res) => {
+  const bookId = req.params?.bookId;
+  const { id: userId } = req.user!;
+  const updatedData = req.body;
+  const result = await BookServices.updateBook(bookId, userId, updatedData);
+  sendResponse(res, {
+    statusCode: result?.statusCode,
+    message: result?.message,
+    data: result?.data,
+  });
+});
+
+export const BookControllers = { createBook, getBooks, getBook, updateBook };
