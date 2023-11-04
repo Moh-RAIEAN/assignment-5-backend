@@ -2,8 +2,10 @@ import { StatusCodes } from "http-status-codes";
 import { IGenericResult } from "../../../helpers/sendResponseHelpers/sendResponseHelpers.interface";
 import { IReview } from "./review.interface";
 import Review from "./review.model";
-import Book from "../book/book.model";
 import ApiError from "../../errors/apiErrorHandler";
+import { IPaginationOptions } from "../../../helpers/paginationHelpers/paginationHelpers.interface";
+import calculatePagination from "../../../helpers/paginationHelpers/paginationHelpers";
+import Book from "../book/book.model";
 
 const createReview = async (
   userId: string,
@@ -24,4 +26,24 @@ const createReview = async (
   };
 };
 
-export const ReviewServices = { createReview };
+const getBookReviews = async (
+  bookId: string,
+  paginationOptions: IPaginationOptions,
+): Promise<IGenericResult<IReview[]>> => {
+  const { page, skip, limit } = calculatePagination(paginationOptions);
+
+  const result = await Review.find({ bookId })
+    .skip(skip)
+    .limit(limit)
+    .populate("user");
+
+  const total = await Review.find({ bookId }).count();
+
+  return {
+    statusCode: StatusCodes.OK,
+    message: "reviews retrived successfully!",
+    meta: { page, limit, total },
+    data: result,
+  };
+};
+export const ReviewServices = { createReview, getBookReviews };

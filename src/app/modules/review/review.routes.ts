@@ -13,4 +13,11 @@ router.post(
   ReviewControllers.createReview,
 );
 
+router.get(
+  "/:bookId",
+  validateAuth(),
+  validateRequest(reviewValidations.getBookReviewsZodValitaionSchema),
+  ReviewControllers.getBookReviews,
+);
+
 export const ReviewRoutes = router;

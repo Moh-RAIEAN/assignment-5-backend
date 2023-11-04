@@ -25,4 +25,21 @@ const createReviewZodValitaionSchema = z.object({
     .strict({ message: "please provide only title and bookId fileds" }),
 });
 
-export const reviewValidations = { createReviewZodValitaionSchema };
+const getBookReviewsZodValitaionSchema = z.object({
+  params: z
+    .object({
+      bookId: z.custom<string>((value) => {
+        if (!mongoose.Types.ObjectId.isValid(value as string)) {
+          throw new z.ZodError([
+            { path: ["bookId"], code: "custom", message: "invalid bookId" },
+          ]);
+        }
+        return value;
+      }),
+    })
+    .strict({ message: "please provide only title and bookId fileds" }),
+});
+export const reviewValidations = {
+  createReviewZodValitaionSchema,
+  getBookReviewsZodValitaionSchema,
+};

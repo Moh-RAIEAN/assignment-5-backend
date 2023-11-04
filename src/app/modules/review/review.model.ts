@@ -16,7 +16,6 @@ const reviewSchema = new Schema<IReview>(
       transform: function (doc, ret) {
         ret.id = ret._id;
         delete ret._id;
-        delete ret.createdAt;
         delete ret.updatedAt;
         delete ret.__v;
       },
