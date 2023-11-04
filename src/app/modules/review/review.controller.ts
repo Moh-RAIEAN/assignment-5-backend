@@ -29,6 +29,7 @@ const getBookReviews = catchAsync(async (req, res) => {
     data: result?.data,
   });
 });
+
 const updateBookReview = catchAsync(async (req, res) => {
   const reviewId = req.params?.reviewId;
   const { id: userId } = req.user!;
@@ -44,8 +45,20 @@ const updateBookReview = catchAsync(async (req, res) => {
     data: result?.data,
   });
 });
+
+const deleteBookReview = catchAsync(async (req, res) => {
+  const reviewId = req.params?.reviewId;
+  const { id: userId } = req.user!;
+  const result = await ReviewServices.deleteBookReview(reviewId, userId);
+  sendResponse(res, {
+    statusCode: result?.statusCode,
+    message: result?.message,
+    data: result?.data,
+  });
+});
 export const ReviewControllers = {
   createReview,
   getBookReviews,
   updateBookReview,
+  deleteBookReview,
 };

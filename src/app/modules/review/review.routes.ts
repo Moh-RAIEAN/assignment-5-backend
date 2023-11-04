@@ -27,4 +27,11 @@ router.patch(
   ReviewControllers.updateBookReview,
 );
 
+router.delete(
+  "/:reviewId",
+  validateAuth(),
+  validateRequest(reviewValidations.deleteBookReviewsZodValitaionSchema),
+  ReviewControllers.deleteBookReview,
+);
+
 export const ReviewRoutes = router;

@@ -55,8 +55,22 @@ const updateBookReviewsZodValitaionSchema = z.object({
     })
     .strict({ message: "please provide only title filed!" }),
 });
+
+const deleteBookReviewsZodValitaionSchema = z.object({
+  params: z.object({
+    reviewId: z.custom<string>((value) => {
+      if (!mongoose.Types.ObjectId.isValid(value as string)) {
+        throw new z.ZodError([
+          { path: ["reviewId"], code: "custom", message: "invalid reviewId" },
+        ]);
+      }
+      return value;
+    }),
+  }),
+});
 export const reviewValidations = {
   createReviewZodValitaionSchema,
   getBookReviewsZodValitaionSchema,
   updateBookReviewsZodValitaionSchema,
+  deleteBookReviewsZodValitaionSchema,
 };
