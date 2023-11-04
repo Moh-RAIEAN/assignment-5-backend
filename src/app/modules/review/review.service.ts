@@ -46,4 +46,37 @@ const getBookReviews = async (
     data: result,
   };
 };
-export const ReviewServices = { createReview, getBookReviews };
+const updateBookReview = async (
+  reviewId: string,
+  userId: string,
+  updatedData: IReview,
+): Promise<IGenericResult<IReview | null>> => {
+  const isBookReviewExists = await Review.findById(reviewId);
+
+  if (!isBookReviewExists) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "requested review not found!", [
+      { path: "reviewId", message: "requested review not found!" },
+    ]);
+  }
+  if (!(isBookReviewExists.user.toString() === userId)) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "permission denied!", [
+      { path: "userId", message: "permission denied!" },
+    ]);
+  }
+
+  const result = await Review.findOneAndUpdate(
+    { _id: reviewId },
+    { ...updatedData },
+    { new: true },
+  ).populate("user");
+  return {
+    statusCode: StatusCodes.OK,
+    message: "review updated successfully!",
+    data: result,
+  };
+};
+export const ReviewServices = {
+  createReview,
+  getBookReviews,
+  updateBookReview,
+};

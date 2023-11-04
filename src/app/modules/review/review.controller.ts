@@ -29,4 +29,23 @@ const getBookReviews = catchAsync(async (req, res) => {
     data: result?.data,
   });
 });
-export const ReviewControllers = { createReview, getBookReviews };
+const updateBookReview = catchAsync(async (req, res) => {
+  const reviewId = req.params?.reviewId;
+  const { id: userId } = req.user!;
+  const updatedData = req.body;
+  const result = await ReviewServices.updateBookReview(
+    reviewId,
+    userId,
+    updatedData,
+  );
+  sendResponse(res, {
+    statusCode: result?.statusCode,
+    message: result?.message,
+    data: result?.data,
+  });
+});
+export const ReviewControllers = {
+  createReview,
+  getBookReviews,
+  updateBookReview,
+};

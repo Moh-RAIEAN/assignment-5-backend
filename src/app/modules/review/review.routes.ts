@@ -20,4 +20,11 @@ router.get(
   ReviewControllers.getBookReviews,
 );
 
+router.patch(
+  "/:reviewId",
+  validateAuth(),
+  validateRequest(reviewValidations.updateBookReviewsZodValitaionSchema),
+  ReviewControllers.updateBookReview,
+);
+
 export const ReviewRoutes = router;

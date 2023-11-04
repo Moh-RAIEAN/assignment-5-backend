@@ -26,20 +26,37 @@ const createReviewZodValitaionSchema = z.object({
 });
 
 const getBookReviewsZodValitaionSchema = z.object({
-  params: z
+  params: z.object({
+    bookId: z.custom<string>((value) => {
+      if (!mongoose.Types.ObjectId.isValid(value as string)) {
+        throw new z.ZodError([
+          { path: ["bookId"], code: "custom", message: "invalid bookId" },
+        ]);
+      }
+      return value;
+    }),
+  }),
+});
+
+const updateBookReviewsZodValitaionSchema = z.object({
+  params: z.object({
+    reviewId: z.custom<string>((value) => {
+      if (!mongoose.Types.ObjectId.isValid(value as string)) {
+        throw new z.ZodError([
+          { path: ["reviewId"], code: "custom", message: "invalid reviewId" },
+        ]);
+      }
+      return value;
+    }),
+  }),
+  body: z
     .object({
-      bookId: z.custom<string>((value) => {
-        if (!mongoose.Types.ObjectId.isValid(value as string)) {
-          throw new z.ZodError([
-            { path: ["bookId"], code: "custom", message: "invalid bookId" },
-          ]);
-        }
-        return value;
-      }),
+      title: z.string().trim().optional(),
     })
-    .strict({ message: "please provide only title and bookId fileds" }),
+    .strict({ message: "please provide only title filed!" }),
 });
 export const reviewValidations = {
   createReviewZodValitaionSchema,
   getBookReviewsZodValitaionSchema,
+  updateBookReviewsZodValitaionSchema,
 };
