@@ -17,7 +17,15 @@ const loginValidationZodSchema = z.object({
     .object({ email: z.string(), password: z.string() })
     .strict({ message: "please provide only email and password" }),
 });
+
+const refreshTokenValidationZodSchema = z.object({
+  cookies: z.object({
+    refreshToken: z.string(),
+  }),
+});
+
 export const AuthValidations = {
   loginValidationZodSchema,
   registerValidationZodSchema,
+  refreshTokenValidationZodSchema,
 };

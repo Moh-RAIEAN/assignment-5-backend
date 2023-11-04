@@ -9,6 +9,8 @@ import ApiError from "../../errors/apiErrorHandler";
 import { Loggers } from "../../../winston/winston.logger";
 import sendErrorResponse from "./errorResponse.handlter";
 import { handleDuplicateKeyError } from "../../errors/duplicateKeyErrorHandler";
+import { JsonWebTokenError } from "jsonwebtoken";
+import handlejwtError from "../../errors/jwtErrorHandler";
 
 const globalErrorHandler: ErrorRequestHandler = (
   error,
@@ -41,6 +43,10 @@ const globalErrorHandler: ErrorRequestHandler = (
     errorResponse.errorMessages = simplifiedError.errorMessages;
   } else if (error.code === 11000 || error.code === 10001) {
     const simplifiedError = handleDuplicateKeyError(error);
+    errorResponse.message = simplifiedError.message;
+    errorResponse.errorMessages = simplifiedError.errorMessages;
+  } else if (error instanceof JsonWebTokenError) {
+    const simplifiedError = handlejwtError(error);
     errorResponse.message = simplifiedError.message;
     errorResponse.errorMessages = simplifiedError.errorMessages;
   } else {

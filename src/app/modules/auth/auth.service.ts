@@ -6,6 +6,7 @@ import { JwtHelpers } from "../../../helpers/jwtHelpers/jwt.helpers";
 import Configs from "../../configs";
 import { IAuthCredentials } from "./auth.interface";
 import ApiError from "../../errors/apiErrorHandler";
+import { IJwtPayload } from "../../../helpers/jwtHelpers/jwt.helpers.interface";
 
 const registerUser = async (
   userData: IUser,
@@ -73,9 +74,48 @@ const loginUser = async (
   );
 
   return {
-    statusCode: StatusCodes.CREATED,
+    statusCode: StatusCodes.OK,
     message: "user logged in successfully",
     data: { ...isExsists.toJSON(), accessToken, refreshToken },
   };
 };
-export const AuthServices = { registerUser, loginUser };
+
+const refreshToken = async (
+  refreshToken: Pick<IAuthCredentials, "refreshToken">,
+): Promise<
+  IGenericResult<Pick<IAuthCredentials, "accessToken" | "refreshToken">>
+> => {
+  const { id } = JwtHelpers.verifyToken(
+    `${refreshToken}`,
+    Configs.jwtRefreshTokenSecret!,
+  ) as IJwtPayload;
+  const isExsists = await User.findById(id);
+  if (!isExsists) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "user does not exists!", [
+      { path: "", message: "user does not exists" },
+    ]);
+  }
+
+  const newAccessToken = JwtHelpers.createToken(
+    { id: isExsists?.id, email: isExsists?.email },
+    Configs.jwtAccessTokenSecret!,
+    { expiresIn: Configs.jwtAccessTokenExpirationDate },
+  );
+
+  const newRefreshToken = JwtHelpers.createToken(
+    { id: isExsists?.id, email: isExsists?.email },
+    Configs.jwtRefreshTokenSecret!,
+    { expiresIn: Configs.jwtRefreshTokenExpirationDate },
+  );
+
+  return {
+    statusCode: StatusCodes.OK,
+    message: "tokens refreshed successfully",
+    data: {
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+    },
+  };
+};
+
+export const AuthServices = { registerUser, loginUser, refreshToken };
